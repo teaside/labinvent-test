@@ -1,0 +1,219 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div class="container-fluid border h-100 bg-white">
+  <div class="row">
+    <div class="col-md-6 border">
+      <h6 class="mt-3">Ethernet settings</h6>
+      <div class="row">
+        <div class="col">
+            <label>
+                <input type="radio" class="mr-3" [(ngModel)]="IP" value="auto" name="IP">
+              <span>Obtain an IP address automatically (DHCP/BootP)</span>
+            </label>
+        </div>
+    </div>
+      <div class="row">
+        <div class="col">
+            <label>
+                <input type="radio" class="mr-3" [(ngModel)]="IP" value="use"  name="IP">
+                Use the following IP address:
+            </label>
+        </div>
+    </div>
+      
+      <div class="row">
+         <div class="col">
+            <div class="row mb-2">
+                <div class="col">
+                    <div [class.disabled]="IP !== 'use'" class="float-right">
+                        <span *ngIf="error.ethernetSettings.ip" class="badge badge-danger">Required field</span>
+                      IP address: 
+                      <span class="text-danger">* </span>  
+                      <input class="input-default-size" [(ngModel)]="setting.ethernetSettings.followingIp.ip" [class.disabled]="IP !== 'use'"  [disabled]="IP !== 'use'" type="text">
+                    </div>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col">
+                    <div  [class.disabled]="IP !== 'use'" class="float-right">
+                        <span *ngIf="error.ethernetSettings.mask" class="badge badge-danger">Required field</span>
+                    Subnet mask: 
+                    <span class="text-danger">* </span>  
+                    <input class="input-default-size" [(ngModel)]="setting.ethernetSettings.followingIp.mask"  [class.disabled]="IP !== 'use'" [disabled]="IP !== 'use'" type="text">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                    <div  [class.disabled]="IP !== 'use'" class="float-right">Default gateway: 
+                        <input class="input-default-size" [(ngModel)]="setting.ethernetSettings.followingIp.gateway" [class.disabled]="IP !== 'use'" [disabled]="IP !== 'use'" type="text">
+                      </div>
+                </div>
+              </div>
+         </div>
+      </div>
+
+      <div>
+        <label>
+          <input type="radio" class="mr-3" [(ngModel)]="DNS" value="auto" name="DNS">Obtain DNS server address automatically
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="radio" class="mr-3" [(ngModel)]="DNS" value="use" name="DNS">Use the following DS address:
+        </label>
+      </div>
+      
+      <div [class.disabled]="DNS !== 'use'" class="float-right mb-2">
+          <span *ngIf="error.ethernetSettings.dns" class="badge badge-danger">Required field</span>
+        Preferred DNS server: 
+        <span class="text-danger">* </span>  
+        <input class="input-default-size" [(ngModel)]="setting.ethernetSettings.followingDns.prefferedDns" [class.disabled]="DNS !== 'use'" [disabled]="DNS !== 'use'" type="text">
+      </div>
+      <div [class.disabled]="DNS !== 'use'" class="float-right">Alternative DNS server: 
+        <input class="input-default-size" [(ngModel)]="setting.ethernetSettings.followingDns.alternativeDns" [class.disabled]="DNS !== 'use'"  [disabled]="DNS !== 'use'"type="text">
+      </div>
+    </div>
+
+    <!-- 2 -->
+    
+    <div class="col-md-6 border">
+      <h6 class="mt-3">Wireless settings</h6>
+
+      <div class="row">
+        <div class="col">
+            <!-- <label> -->
+              <input type="checkbox" [(ngModel)]="wifiEnable">
+            <!-- </label> -->
+            <span class="d-inline-block">Enable wifi:</span>
+        </div>
+      </div>
+      <div>
+          <div class="row">
+            <div class="col">
+                <div [class.disabled]="!wifiEnable"  class="float-right">
+                    <span *ngIf="error.wirelessSettings.name" class="badge badge-danger">Required field</span>
+                Wireless Network Name: 
+                <span class="text-danger">* </span>  
+                <select class="select-default-size" [class.disabled]="!wifiEnable" [disabled]="!wifiEnable" (change)="setName($event.target.value)">
+                  <option *ngFor="let point of filteredAccessPoints">{{point.name}}</option>
+              </select> 
+              <button  [class.disabled]="!wifiEnable" class="btn-hide defalut-padding" [disabled]="!wifiEnable" (click)="getAccessPoints()"><svg [class.disabled]="!wifiEnable" class="m-0 p-0" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
+                width="25px" height="25px" viewBox="3 -2 25 25" style="enable-background:new 3 -2 25 25;" xml:space="preserve">
+             <path d="M23.1,10.5c0,4.1-3.4,7.5-7.5,7.5s-7.5-3.4-7.5-7.5S11.5,3,15.6,3c1.9,0,3.6,0.7,5,1.9l-0.2-3.2l1-0.1l0.3,5l0,0l0,0l-5,0.3
+               l-0.1-1L20,5.7C18.8,4.6,17.3,4,15.6,4C12,4,9.1,6.9,9.1,10.5S12,17,15.6,17s6.5-2.9,6.5-6.5H23.1z"/>
+             </svg></button>
+              </div>
+            </div>
+          </div>
+          
+          
+
+        <div class="row">
+          <div class="col" [class.disabled]="!wifiEnable">
+            <label  [class.disabled]="!wifiEnable">
+            <input  [class.disabled]="!wifiEnable" [disabled]="!wifiEnable" [(ngModel)]="securityEnable" type="checkbox">Enable Wireless Security:
+          </label>
+        </div>
+        </div>
+          <div class="row">
+            <div class="col">
+                <div [class.disabled]="!wifiEnable" class="float-right">
+                <span *ngIf="error.wirelessSettings.securityKey" class="badge badge-danger">Required field</span>
+                <span class="text-danger">* </span> 
+                <!-- <div> -->
+                  <label [class.disabled]="!wifiEnable || !securityEnable">
+                      Security key
+                      <input type="text" class="input-default-size" [(ngModel)]="setting.wirelessSettings.securityKey" [class.disabled]="!wifiEnable || !securityEnable" [disabled]="!wifiEnable || !securityEnable">
+                  </label>
+                <!-- </div> -->
+                
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+                <label [class.disabled]="!wifiEnable">
+                    <input type="radio" class="mr-3" [disabled]="!wifiEnable" [(ngModel)]="IPwifi" value="auto" name="IPwifi">
+                    Obtain an IP address automatically (DHCP/BootP)
+                  </label>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col">
+            <label [class.disabled]="!wifiEnable">
+              <input  [class.disabled]="!wifiEnable" type="radio" class="mr-3" [disabled]="!wifiEnable" [(ngModel)]="IPwifi" value="use" name="IPwifi">
+              Use the following IP address:
+            </label>
+          </div>
+          </div>
+          
+          <div class="row mb-2">
+            <div class="col">
+                <div [class.disabled]="!wifiEnable || IPwifi !== 'use'" class="float-right">
+                    <span *ngIf="error.wirelessSettings.ip" class="badge badge-danger">Required field</span>
+                  IP address: 
+                  <span class="text-danger">* </span>  
+                  <input class="input-default-size"  [(ngModel)]="setting.wirelessSettings.followingIp.ip" [class.disabled]="!wifiEnable || IPwifi !== 'use'" [disabled]="!wifiEnable || IPwifi !== 'use'" type="text">
+                </div>
+            </div>
+          </div>
+          <div class="row mb-2">
+              <div class="col">
+          <div [class.disabled]="!wifiEnable || IPwifi !== 'use'" class="float-right">
+                <span *ngIf="error.wirelessSettings.mask" class="badge badge-danger">Required field</span>
+            Subnet mask: 
+            <span class="text-danger">* </span>  
+            <input class="input-default-size"  [(ngModel)]="setting.wirelessSettings.followingIp.mask" [class.disabled]="!wifiEnable || IPwifi !== 'use'" [disabled]="!wifiEnable || IPwifi !== 'use'" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="row mb-2">
+          <div class="col">
+          <div [class.disabled]="!wifiEnable || IPwifi !== 'use'" class="float-right">Default gateway: 
+            <input class="input-default-size"  [(ngModel)]="setting.wirelessSettings.followingIp.gateway" [class.disabled]="!wifiEnable || IPwifi !== 'use'" [disabled]="!wifiEnable || IPwifi !== 'use'" type="text">
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+          <div class="col">
+            <label [class.disabled]="!wifiEnable">
+              <input type="radio" class="mr-3" [class.disabled]="!wifiEnable" [disabled]="!wifiEnable" [(ngModel)]="DNSwifi" value="auto">
+              Obtain DNS server address automatically
+            </label>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col">
+            <label [class.disabled]="!wifiEnable">
+              <input type="radio" class="mr-3" [class.disabled]="!wifiEnable" [disabled]="!wifiEnable" type="radio" [(ngModel)]="DNSwifi" value="use">
+              Use the following DS server address:
+            </label>
+          </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+          <div [class.disabled]="!wifiEnable || DNSwifi !== 'use'" class="float-right">
+                <span *ngIf="error.wirelessSettings.dns" class="badge badge-danger">Required field</span>
+            Preferred DNS server: 
+            <span class="text-danger">* </span>  
+            <input class="input-default-size" [(ngModel)]="setting.wirelessSettings.followingDns.prefferedDns" [class.disabled]="!wifiEnable || DNSwifi !== 'use'" [disabled]="!wifiEnable || DNSwifi !== 'use'" type="text">
+          </div>
+        </div>
+      </div>
+        <div class="row mb-4">
+            <div class="col">
+                <div [class.disabled]="!wifiEnable || DNSwifi !== 'use'" class="float-right">Alternative DNS server: 
+                    <input class="input-default-size" [(ngModel)]="setting.wirelessSettings.followingDns.alternativeDns" [class.disabled]="!wifiEnable || DNSwifi !== 'use'" [disabled]="!wifiEnable || DNSwifi !== 'use'" type="text">
+                  </div>
+        </div>
+      </div>
+  </div>
+</div>
+<div class="col p-2">
+      <button class="btn btn-primary ml-3 p-0 custom-btn b-0" (click)="save()"><span>Save</span></button>
+      <button class="btn btn-outline-primary ml-3 p-0 custom-btn custom-outline-btn" (click)="clear()">Cancel</button>
+</div>
+</div>
+</div>
